@@ -6,13 +6,13 @@
 " Latest Revision: 2014-06-28
 " URL:             https://github.com/chase/vim-ansible-yaml
 
-if !exists("main_syntax")
+if !exists("b:main_syntax")
   if version < 600
     syntax clear
   elseif exists("b:current_syntax")
     finish
   endif
-  let main_syntax = 'ansible'
+  let b:main_syntax = 'ansible'
 endif
 
 " Load YAML syntax
@@ -45,6 +45,6 @@ endif
 
 let b:current_syntax = 'ansible'
 
-if main_syntax == 'ansible'
-  unlet main_syntax
+if b:main_syntax == 'ansible'
+  unlet b:main_syntax
 endif

@@ -6,14 +6,15 @@
 " Latest Revision: 2014-06-28
 " URL:             https://github.com/chase/vim-ansible-yaml
 
-if !exists("b:main_syntax")
-  if version < 600
+if !exists('b:main_syntax')
+  if v:version < 600
     syntax clear
-  elseif exists("b:current_syntax")
+  elseif exists('b:current_syntax')
     finish
   endif
   let b:main_syntax = 'ansible'
 endif
+
 
 " Load YAML syntax
 source <sfile>:p:h/include/yaml.vim
@@ -22,14 +23,16 @@ unlet b:current_syntax
 source <sfile>:p:h/include/jinja.vim
 unlet b:current_syntax
 
+source <sfile>:p:h/include/modules.vim
+
 syn case match
 
 syn match ansibleRepeat '\<with_\w\+\>' contained containedin=yamlKey
 syn keyword ansibleConditional when changed_when  contained containedin=yamlKey
 syn region ansibleString  start='"' end='"' skip='\\"' display contains=jinjaVarBlock
 
-if version >= 508 || !exist("did_ansible_syn")
-  if version < 508
+if v:version >= 508 || !exist('did_ansible_syn')
+  if v:version < 508
     let did_ansible_syn = 1
     command -nargs=+ HiLink hi link <args>
   else

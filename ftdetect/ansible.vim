@@ -6,8 +6,29 @@
 " Latest Revision: 2015-03-23
 " URL:             https://github.com/chase/vim-ansible-yaml
 
-autocmd BufNewFile,BufRead *.yml,*.yaml,*/{group,host}_vars/*  call s:SelectAnsible("ansible")
+" autocmd BufNewFile,BufRead *.yml,*.yaml,*/{group,host}_vars/*  call s:SelectAnsible("ansible")
+autocmd BufNewFile,BufRead *.yml,*.yaml,*/{group,host}_vars/*  call s:check_ansible()
 autocmd BufNewFile,BufRead hosts call s:SelectAnsible("ansible_hosts")
+
+function! s:check_ansible()
+    if getline(1) =~? '^#!.*ansible'
+        setlocal filetype=ansible
+    elseif ( glob('ansible.cfg') ==# 'ansible.cfg' )
+        if expand('%:e') ==# 'yml'
+            setlocal filetype=ansible
+        endif
+    else
+        let l:next_line = getline(1)
+        if l:next_line =~# '^---'
+            let l:next_line = getline(2)
+        endif
+        if l:next_line =~# '\v^[ ]*-[ ]*(hosts|name):'
+            setlocal filetype=ansible
+        elseif l:next_line =~? 'ansible'
+            setlocal filetype=ansible
+        endif
+    endif
+endfunction
 
 fun! s:SelectAnsible(fileType)
   " Bail out if 'filetype' is already set to "ansible".

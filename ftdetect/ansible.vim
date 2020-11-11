@@ -14,7 +14,7 @@ function! s:check_ansible()
     if getline(1) =~? '^#!.*ansible'
         setlocal filetype=ansible
     elseif ( glob('ansible.cfg') ==# 'ansible.cfg' )
-        if expand('%:e') ==# 'yml'
+        if expand('%:e') =~# 'y[a]*ml'
             setlocal filetype=ansible
         endif
     else
